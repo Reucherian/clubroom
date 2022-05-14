@@ -32,7 +32,6 @@ app.use(function(req, res, next) {
 });
 
 const AWS = require('aws-sdk');
-const { default: userEvent } = require('@testing-library/user-event');
 const docClient = new AWS.DynamoDB.DocumentClient()
 
 
@@ -41,8 +40,23 @@ const docClient = new AWS.DynamoDB.DocumentClient()
  **********************/
 
 app.get('/rooms', function(req, res) {
-  // Add your code here
-  res.json({success: 'get call succeed!', url: req.url});
+  var params = {
+    TableName : process.env.STORAGE_ROOMS_NAME
+  }
+  docClient.scan(params, onScan);
+  function onScan(err, data) {
+    if (err) {
+        console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2));
+    } else {
+        console.log("Scan succeeded.");
+        if (typeof data.LastEvaluatedKey != "undefined") {
+            console.log("Scanning for more...");
+            params.ExclusiveStartKey = data.LastEvaluatedKey;
+            docClient.scan(params, onScan);
+        }
+        res.json({data:[...data.Items], success: 'get call succeed!', url: req.url});
+    }
+}
 });
 
 app.get('/rooms/*', function(req, res) {
@@ -111,51 +125,51 @@ app.post('/rooms', async function(req, res) {
 
 
 //create room
-const createMeeting = async(context) => {
+// const createMeeting = async(context) => {
 
-  const roomId = context.arguments.roomId;
-  const region = context.arguments.region || 'us-east-1';
-  //add iconuri
+//   const roomId = context.arguments.roomId;
+//   const region = context.arguments.region || 'us-east-1';
+//   //add iconuri
 
-  if (!roomId) {
-    return response(400, 'application/json', JSON.stringify({
-      error: 'Required properties: meeting roomId'
-    }));
-  }
+//   if (!roomId) {
+//     return response(400, 'application/json', JSON.stringify({
+//       error: 'Required properties: meeting roomId'
+//     }));
+//   }
 
-  const request ={
-    ClientRequestToken: uuid(), //todo: handle unique user id
-    MediaRegion: region,
-    NotificationsConfiguration: {
-      SqsQueueArn: SQS_QUEUE_AR, //add the enviro
-     }, 
-    ExternalMeetingId: roomId
-  };
+//   const request ={
+//     ClientRequestToken: uuid(), //todo: handle unique user id
+//     MediaRegion: region,
+//     NotificationsConfiguration: {
+//       SqsQueueArn: SQS_QUEUE_AR, //add the enviro
+//      }, 
+//     ExternalMeetingId: roomId
+//   };
 
-  console.info('Creating new Room');
-  meetingInfo = await chime.createMeeting(request).promise();
+//   console.info('Creating new Room');
+//   meetingInfo = await chime.createMeeting(request).promise();
 
-  //new attendee
-  console.info('Adding new attendee');
+//   //new attendee
+//   console.info('Adding new attendee');
 
-  const attendeeInfo = (await chime.createAttendee({
-    MeetingId: meetingInfo.Meeting.MeetingId,
-    ExternalUserId: `${uuid().substring(0, 8)}#${roomId}`.substring(0, 64),
-  }).promise());
+//   const attendeeInfo = (await chime.createAttendee({
+//     MeetingId: meetingInfo.Meeting.MeetingId,
+//     ExternalUserId: `${uuid().substring(0, 8)}#${roomId}`.substring(0, 64),
+//   }).promise());
 
-  return response(200, 'application/json', JSON.stringify(
-    {
-      Meeting: meetingInfo.Meeting,
-      Attendee: attendeeInfo.Attendee,
-    }, null, 2));
+//   return response(200, 'application/json', JSON.stringify(
+//     {
+//       Meeting: meetingInfo.Meeting,
+//       Attendee: attendeeInfo.Attendee,
+//     }, null, 2));
     
-}
+// }
 
 //TODO: implement joinRoom()
 
 //TODO: implement endRoom()
 
-//TODO: implement listRoom()
+
 
 
 app.post('/rooms/*', function(req, res) {
