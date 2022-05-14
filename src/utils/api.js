@@ -20,6 +20,33 @@ async function createRoom(title,topic,host,region,iconUri){
 
 }
 
+
+
+async function joinRoom(topic,host, region){
+    const data = {
+        // roomid is generated
+        body : {
+            title: title,
+            topic: topic,
+            host: host,
+            region: region,
+            iconUri: iconUri
+        }
+    };
+    const apiData =await API.post('clubroom', '/rooms', data);
+    console.log({apiData});
+    alert('Room Created');
+
+}
+
+
+
+
+
+
+
+
+
 // const formstate = { roomID : '', hostName : '', region : 'us-east-1', uri :''};
 // export async function joinMeeting(meetingId, name) {
 //     const joinInfo: any = await API.graphql(graphqlOperation(joinChimeMeeting, {meetingId: meetingId, name: name}));
