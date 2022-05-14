@@ -110,7 +110,7 @@ app.post('/rooms', async function(req, res) {
 });
 
 
-
+//create room
 const createMeeting = async(context) => {
 
   const roomId = context.arguments.roomId;
@@ -151,6 +151,11 @@ const createMeeting = async(context) => {
     
 }
 
+//TODO: implement joinRoom()
+
+//TODO: implement endRoom()
+
+//TODO: implement listRoom()
 
 
 app.post('/rooms/*', function(req, res) {
