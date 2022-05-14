@@ -8,6 +8,9 @@ import Amplify from 'aws-amplify';
 import { API } from 'aws-amplify';
 
 import awsExports from './aws-exports';
+import Signup from './components/signUp';
+import Confirmation from './components/confirmation';
+import ProtectedRoute from './components/protectedRoutes';
 Amplify.configure(awsExports);
 
 export const theme = createTheme({
@@ -33,15 +36,25 @@ export const theme = createTheme({
   },
 });
 
+
 function App() {
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
         <Router>
           <Routes>
-            <Route exact path='/' element={<Login />}>
-            </Route>
-            <Route path='/rooms' element={<Rooms/>}>
+            
+            <Route path="/signup" element={<Signup />}>
+      
+          </Route>
+          <Route path="/signin" element={<Login />}>
+          </Route>
+          <Route path="/confirmation" element={<Confirmation />}>
+          </Route>
+          <Route path="/" element={<ProtectedRoute component={<Rooms/>} />}>
+          </Route>
+
+            <Route path='/rooms' element={<ProtectedRoute component={<Rooms/>}/>}>
             </Route>
           </Routes>
         </Router>
