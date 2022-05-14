@@ -7,8 +7,8 @@ import Rooms from './pages/rooms';
 import Amplify from 'aws-amplify';
 import { API } from 'aws-amplify';
 
-// import awsExports from './aws-exports';
-// Amplify.configure(awsExports);
+import awsExports from './aws-exports';
+Amplify.configure(awsExports);
 
 export const theme = createTheme({
   palette: {
