@@ -36,10 +36,6 @@ const docClient = new AWS.DynamoDB.DocumentClient()
 const chime = new AWS.Chime({ region: 'us-east-1' });
 
 
-/**********************
- * Example get method *
- **********************/
-
 app.get('/rooms', function(req, res) {
   var params = {
     TableName : process.env.STORAGE_ROOMS_NAME
@@ -60,17 +56,11 @@ app.get('/rooms', function(req, res) {
 }
 });
 
-app.get('/rooms/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'get call succeed!', url: req.url});
-});
-
 /****************************
 * Example post method *
 ****************************/
 
 app.post('/rooms', async function(req, res) {
-  // Add your code here
   console.log(req);
   const roomId = uuid();
   const region = 'us-east-1';
@@ -115,49 +105,23 @@ app.post('/rooms', async function(req, res) {
   })
 });
 
-
-//create room
-// const createMeeting = async(context) => {
-
-//   const roomId = context.arguments.roomId;
-//   const region = context.arguments.region || 'us-east-1';
-//   //add iconuri
-
-//   if (!roomId) {
-//     return response(400, 'application/json', JSON.stringify({
-//       error: 'Required properties: meeting roomId'
-//     }));
-//   }
-
-//   const request ={
-//     ClientRequestToken: uuid(), //todo: handle unique user id
-//     MediaRegion: region,
-//     NotificationsConfiguration: {
-//       SqsQueueArn: SQS_QUEUE_AR, //add the enviro
-//      }, 
-//     ExternalMeetingId: roomId
-//   };
-
-//   console.info('Creating new Room');
-//   meetingInfo = await chime.createMeeting(request).promise();
-
-//   //new attendee
-//   console.info('Adding new attendee');
-
-//   const attendeeInfo = (await chime.createAttendee({
-//     MeetingId: meetingInfo.Meeting.MeetingId,
-//     ExternalUserId: `${uuid().substring(0, 8)}#${roomId}`.substring(0, 64),
-//   }).promise());
-
-//   return response(200, 'application/json', JSON.stringify(
-//     {
-//       Meeting: meetingInfo.Meeting,
-//       Attendee: attendeeInfo.Attendee,
-//     }, null, 2));
-    
-// }
-
 //TODO: implement joinRoom()
+app.post('/joinRoom', async function(req, res){
+  console.log("Joining Room")
+  console.log(req);
+  const {meetingId , name, user} = req.body;
+  if (!meetingId || !name) {
+    return response(400, 'application/json', JSON.stringify({
+      error: 'Required properties: meeting Id, name, user'
+    }));
+  }
+  const attendeeInfo = (await chime.createAttendee({
+    MeetingId: meetingId,
+    ExternalUserId: user,
+  }).promise());
+
+  return res.json({attendee: attendeeInfo.Attendee});
+});
 
 //TODO: implement endRoom()
 
