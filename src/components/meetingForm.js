@@ -4,7 +4,7 @@ import {
   FormField,
   Input,
   PrimaryButton,
-  useMeetingManager
+  useMeetingManager,
 } from "amazon-chime-sdk-component-library-react";
 import { MeetingSessionConfiguration } from 'amazon-chime-sdk-js';
 import utils from '../utils/api'
@@ -16,7 +16,7 @@ const MeetingForm = ({ userId }) => {
   const [meetingTitle, setMeetingTitle] = useState("");
   const [meetingTopic, setMeetingTopic] = useState("");
   const [attendeeName, setName] = useState("");
-
+  const [meetingStatus, setStatus] = useState(false)
   const clickedJoinMeeting = async (event) => {
     event.preventDefault();
     const title = meetingTitle.trim().toLocaleLowerCase();
@@ -39,7 +39,12 @@ const MeetingForm = ({ userId }) => {
     }
 
     await meetingManager.start();
+    setStatus(() => true)
   };
+
+  if(meetingStatus) {
+    return <></>
+  }
 
   return (
     <>
