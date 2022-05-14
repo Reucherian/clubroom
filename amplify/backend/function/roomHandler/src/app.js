@@ -105,7 +105,6 @@ app.post('/rooms', async function(req, res) {
   })
 });
 
-//TODO: implement joinRoom()
 app.post('/joinRoom', async function(req, res){
   console.log("Joining Room")
   console.log(req);
@@ -123,8 +122,28 @@ app.post('/joinRoom', async function(req, res){
   return res.json({attendee: attendeeInfo.Attendee});
 });
 
-//TODO: implement endRoom()
-
+app.post('/endRoom',async function(req,res){
+  console.log("Ending Room")
+  console.log(req);
+  const {meetingId,roomId} = req.body;
+  await chime.deleteMeeting({ MeetingId: meetingId });
+  if (!meetingId){
+    throw new Error('meeting id required')
+  }
+ return docClient.update({
+  TableName: process.env.STORAGE_ROOMS_NAME,
+  Key: {
+   roomId: roomId
+  },
+  UpdateExpression: 'set delete = :s',
+  ExpressionAttributeValues: {
+   ':s': true
+  }
+ }).promise()
+  .then(() => {
+    res.json({success:'room deleted'});
+  })
+})
 
 
 
