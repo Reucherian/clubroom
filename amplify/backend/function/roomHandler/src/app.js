@@ -72,54 +72,45 @@ app.post('/rooms', async function(req, res) {
   // Add your code here
   console.log(req);
   const roomId = uuid();
-  var params = {
-    TableName : process.env.STORAGE_ROOMS_NAME,
-    Item:{
-      roomId: roomId,
-      title: req.body.title,
-      topic: req.body.topic,
-      iconUri: req.body.iconUri,
-      delete: false,
-      host: req.body.host,
-      createTime: Date.now(),
-    }
-  }
-  console.log(params);
   const region = 'us-east-1';
   //add iconuri
-  // if (!roomId) {
-  //   return response(400, 'application/json', JSON.stringify({
-  //     error: 'Required properties: meeting roomId'
-  //   }));
-  // }
   const request ={
     ClientRequestToken: req.body.host, //todo: handle unique user id
     MediaRegion: region,
     NotificationsConfiguration: {
-      SqsQueueArn: SQS_QUEUE_AR, //add the enviro
+      SqsQueueArn: SQS_QUEUE_ARN, //add variable ***
      }, 
     ExternalMeetingId: roomId
   };
-
   console.info('Creating new Room');
   meetingInfo = await chime.createMeeting(request).promise();
-
   //new attendee
   console.info('Adding new attendee');
-
   const attendeeInfo = (await chime.createAttendee({
     MeetingId: meetingInfo.Meeting.MeetingId,
     ExternalUserId: `${uuid().substring(0, 8)}#${roomId}`.substring(0, 64),
   }).promise());
-   const res_extra = JSON.stringify(
-    {
-      Meeting: meetingInfo.Meeting,
-      Attendee: attendeeInfo.Attendee,
-    });
-  
+   const meeting_info ={
+      meeting: meetingInfo.Meeting,
+      attendee: attendeeInfo.Attendee,
+    };
+    console.log(meeting_info)
+    const params = {
+      TableName : process.env.STORAGE_ROOMS_NAME,
+      Item:{
+        roomId: roomId,
+        title: req.body.title,
+        topic: req.body.topic,
+        iconUri: req.body.iconUri,
+        delete: false,
+        host: req.body.host,
+        createTime: Date.now(),
+        ...meeting_info
+      }
+    }
   docClient.put(params, function(err, data){
     if(err) res.json({err})
-    else res.json({...res_extra, success: 'Room created'})
+    else res.json({...meeting_info, success: 'Room created'})
   })
 });
 
