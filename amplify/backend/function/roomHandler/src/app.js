@@ -23,7 +23,6 @@ const {uuid} = require('uuidv4');
 const app = express()
 app.use(bodyParser.json())
 app.use(awsServerlessExpressMiddleware.eventContext())
-const chime = new AWS.Chime({ region: 'us-east-1' });
 
 // Enable CORS for all methods
 app.use(function(req, res, next) {
@@ -34,6 +33,7 @@ app.use(function(req, res, next) {
 
 const AWS = require('aws-sdk');
 const docClient = new AWS.DynamoDB.DocumentClient()
+const chime = new AWS.Chime({ region: 'us-east-1' });
 
 
 /**********************
