@@ -13,7 +13,7 @@ const DLink = styled(Link)({
   textAlign: "right",
 });
 
-const Signup = () => {
+const Login = () => {
   const [loading, setLoading] = React.useState(false);
 
   const navigate = useNavigate();
@@ -66,4 +66,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;
