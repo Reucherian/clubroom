@@ -6,66 +6,38 @@ import {
   PrimaryButton,
   useMeetingManager
 } from "amazon-chime-sdk-component-library-react";
+import { MeetingSessionConfiguration } from 'amazon-chime-sdk-js';
 import utils from '../utils/api'
 
 const { createRoom } = utils;
 
-const MeetingForm = ({ userName }) => {
+const MeetingForm = ({ userId }) => {
   const meetingManager = useMeetingManager();
   const [meetingTitle, setMeetingTitle] = useState("");
+  const [meetingTopic, setMeetingTopic] = useState("");
   const [attendeeName, setName] = useState("");
-
-  function getAttendeeCallback() {
-    return async (chimeAttendeeId, externalUserId) => {
-      // const attendeeInfo = await getAttendeeFromDB(chimeAttendeeId);
-      // const attendeeData = attendeeInfo.data.getAttendee;
-      return {
-        // name: attendeeData.name,
-        name: userName
-      };
-    };
-  }
 
   const clickedJoinMeeting = async (event) => {
     event.preventDefault();
-
-    meetingManager.getAttendee = getAttendeeCallback();
-    // meetingManager.getAttendee = userName;
     const title = meetingTitle.trim().toLocaleLowerCase();
-    const name = attendeeName.trim();
+    const topic = meetingTopic.trim().toLocaleLowerCase();
 
-    // const meetingResponse = await getMeetingFromDB(title);
-    // const meetingJson = meetingResponse.data.getMeeting;
+    
     try {
-      // if (meetingJson) {
-      //   const meetingData = JSON.parse(meetingJson.data);
-      //   const joinInfo = await joinMeeting(meetingData.MeetingId, name);
-      //   await addAttendeeToDB(joinInfo.Attendee.AttendeeId, name);
-
-      //   await meetingManager.join({
-      //     meetingInfo: meetingData,
-      //     attendeeInfo: joinInfo.Attendee,
-      //   });
-      // } else {
-        const joinInfo = await createRoom('sample title','technology',userName,'us-east-1','sample-uri');
-        // const joinInfo = await createRoom(title, name, "us-east-1");
-        // await addMeetingToDB(
-        //   title,
-        //   joinInfo.Meeting.MeetingId,
-        //   JSON.stringify(joinInfo.Meeting)
-        // );
-        // await addAttendeeToDB(joinInfo.Attendee.AttendeeId, name);
-
-        await meetingManager.join({
-          meetingInfo: joinInfo.Meeting,
-          attendeeInfo: joinInfo.Attendee,
+        const joinInfo = await createRoom({
+          title,
+          topic,
+          host: userId
         });
-      // }
+      
+        const meetingConfig = new MeetingSessionConfiguration(joinInfo.meeting, joinInfo.attendee)
+        console.log(joinInfo)
+        console.log(meetingConfig)
+        await meetingManager.join(meetingConfig);
     } catch (error) {
       console.log(error);
     }
 
-    // At this point you can let users setup their devices, or start the session immediately
     await meetingManager.start();
   };
 
@@ -73,14 +45,27 @@ const MeetingForm = ({ userName }) => {
     <>
       <FormField
         field={Input}
-        label="Meeting Id"
+        label="Meeting Title"
         value={meetingTitle}
         fieldProps={{
-          name: "Meeting Id",
-          placeholder: "Enter a Meeting ID",
+          name: "Meeting Title",
+          placeholder: "Enter a Meeting Title",
         }}
         onChange={(e) => {
           setMeetingTitle(e.target.value);
+        }}
+        layout="stack"
+      />
+      <FormField
+        field={Input}
+        label="Meeting Topic"
+        value={meetingTopic}
+        fieldProps={{
+          name: "Meeting Topic",
+          placeholder: "Enter a Meeting Topic",
+        }}
+        onChange={(e) => {
+          setMeetingTopic(e.target.value);
         }}
         layout="stack"
       />
