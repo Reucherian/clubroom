@@ -2,7 +2,7 @@ import './App.css';
 import { ThemeProvider } from '@emotion/react';
 import { createTheme } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './pages/login';
+import Login from './components/login';
 import Rooms from './pages/rooms';
 import Amplify from 'aws-amplify';
 import { API } from 'aws-amplify';
