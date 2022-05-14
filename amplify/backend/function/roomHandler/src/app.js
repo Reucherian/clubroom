@@ -31,7 +31,8 @@ app.use(function(req, res, next) {
   next()
 });
 
-const AWS = require('aws-sdk')
+const AWS = require('aws-sdk');
+const { default: userEvent } = require('@testing-library/user-event');
 const docClient = new AWS.DynamoDB.DocumentClient()
 
 
@@ -53,13 +54,14 @@ app.get('/rooms/*', function(req, res) {
 * Example post method *
 ****************************/
 
-app.post('/rooms', function(req, res) {
+app.post('/rooms', async function(req, res) {
   // Add your code here
   console.log(req);
+  const roomId = uuid();
   var params = {
     TableName : process.env.STORAGE_ROOMS_NAME,
     Item:{
-      roomId: uuid(),
+      roomId: roomId,
       title: req.body.title,
       topic: req.body.topic,
       iconUri: req.body.iconUri,
@@ -69,11 +71,92 @@ app.post('/rooms', function(req, res) {
     }
   }
   console.log(params);
+  const region = 'us-east-1';
+  //add iconuri
+  // if (!roomId) {
+  //   return response(400, 'application/json', JSON.stringify({
+  //     error: 'Required properties: meeting roomId'
+  //   }));
+  // }
+  const request ={
+    ClientRequestToken: req.body.host, //todo: handle unique user id
+    MediaRegion: region,
+    NotificationsConfiguration: {
+      SqsQueueArn: SQS_QUEUE_AR, //add the enviro
+     }, 
+    ExternalMeetingId: roomId
+  };
+
+  console.info('Creating new Room');
+  meetingInfo = await chime.createMeeting(request).promise();
+
+  //new attendee
+  console.info('Adding new attendee');
+
+  const attendeeInfo = (await chime.createAttendee({
+    MeetingId: meetingInfo.Meeting.MeetingId,
+    ExternalUserId: `${uuid().substring(0, 8)}#${roomId}`.substring(0, 64),
+  }).promise());
+   const res_extra = JSON.stringify(
+    {
+      Meeting: meetingInfo.Meeting,
+      Attendee: attendeeInfo.Attendee,
+    });
+  
   docClient.put(params, function(err, data){
     if(err) res.json({err})
-    else res.json({success: 'Room created'})
+    else res.json({...res_extra, success: 'Room created'})
   })
 });
+
+
+//create room
+const createMeeting = async(context) => {
+
+  const roomId = context.arguments.roomId;
+  const region = context.arguments.region || 'us-east-1';
+  //add iconuri
+
+  if (!roomId) {
+    return response(400, 'application/json', JSON.stringify({
+      error: 'Required properties: meeting roomId'
+    }));
+  }
+
+  const request ={
+    ClientRequestToken: uuid(), //todo: handle unique user id
+    MediaRegion: region,
+    NotificationsConfiguration: {
+      SqsQueueArn: SQS_QUEUE_AR, //add the enviro
+     }, 
+    ExternalMeetingId: roomId
+  };
+
+  console.info('Creating new Room');
+  meetingInfo = await chime.createMeeting(request).promise();
+
+  //new attendee
+  console.info('Adding new attendee');
+
+  const attendeeInfo = (await chime.createAttendee({
+    MeetingId: meetingInfo.Meeting.MeetingId,
+    ExternalUserId: `${uuid().substring(0, 8)}#${roomId}`.substring(0, 64),
+  }).promise());
+
+  return response(200, 'application/json', JSON.stringify(
+    {
+      Meeting: meetingInfo.Meeting,
+      Attendee: attendeeInfo.Attendee,
+    }, null, 2));
+    
+}
+
+//TODO: implement joinRoom()
+
+//TODO: implement endRoom()
+
+//TODO: implement listRoom()
+
 
 app.post('/rooms/*', function(req, res) {
   // Add your code here
