@@ -23,6 +23,7 @@ const {uuid} = require('uuidv4');
 const app = express()
 app.use(bodyParser.json())
 app.use(awsServerlessExpressMiddleware.eventContext())
+const chime = new AWS.Chime({ region: 'us-east-1' });
 
 // Enable CORS for all methods
 app.use(function(req, res, next) {
@@ -78,12 +79,12 @@ app.post('/rooms', async function(req, res) {
     ClientRequestToken: req.body.host, //todo: handle unique user id
     MediaRegion: region,
     NotificationsConfiguration: {
-      SqsQueueArn: SQS_QUEUE_ARN, //add variable ***
+      SqsQueueArn: process.env.SQS_QUEUE_ARN, //add variable ***
      }, 
     ExternalMeetingId: roomId
   };
   console.info('Creating new Room');
-  meetingInfo = await chime.createMeeting(request).promise();
+  const meetingInfo = await chime.createMeeting(request).promise();
   //new attendee
   console.info('Adding new attendee');
   const attendeeInfo = (await chime.createAttendee({
