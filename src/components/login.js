@@ -1,19 +1,15 @@
 import React from "react";
 import { useInput } from "./../utils/forms";
 import { Auth } from "aws-amplify";
-import { TextField, styled, Button, CircularProgress } from '@mui/material';
+import { TextField, styled, Button, CircularProgress, Container } from '@mui/material';
 import { Link, useNavigate } from "react-router-dom";
+import ClubRoomHeader from '../components/clubRoomHeader';
 
 const Field = styled(TextField)({
   margin: "10px 0",
 });
 
-const DLink = styled(Link)({
-  margin: "15px 0",
-  textAlign: "right",
-});
-
-const Signup = () => {
+const Login = () => {
   const [loading, setLoading] = React.useState(false);
 
   const navigate = useNavigate();
@@ -37,7 +33,9 @@ const Signup = () => {
   };
 
   return (
-    <form
+    <Container>
+      <ClubRoomHeader />
+      <form
       style={{
         display: "flex",
         flexDirection: "column",
@@ -45,25 +43,22 @@ const Signup = () => {
       }}
       onSubmit={handleSubmit}
     >
-      <h1 style={{ fontSize: "22px", fontWeight: 800 }}>
-        {" "}
-        Sign in to an existing account
-      </h1>
       <Field label="Email" {...bindEmail} type="text" />
       <Field label="Password" type="password" {...bindPassword} />
       <Button
         variant="contained"
-        color="primary"
-        size="large"
+        color="secondary"
         type="submit"
         disabled={loading}
       >
         {loading && <CircularProgress size={20} style={{ marginRight: 20 }} />}
-        Login to Your Account
+        Login
       </Button>
-      <DLink to="/signup">make a new account &rarr;</DLink>
-    </form>
+      <Button variant="contained" onClick={() => {navigate('/signup')}}>Register</Button>
+      </form>
+    </Container>
+    
   );
 };
 
-export default Signup;
+export default Login;
