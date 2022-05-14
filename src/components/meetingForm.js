@@ -4,7 +4,7 @@ import {
   FormField,
   Input,
   PrimaryButton,
-  useMeetingManager,
+  useMeetingManager
 } from "amazon-chime-sdk-component-library-react";
 import utils from '../utils/api'
 
@@ -15,21 +15,22 @@ const MeetingForm = ({ userName }) => {
   const [meetingTitle, setMeetingTitle] = useState("");
   const [attendeeName, setName] = useState("");
 
-  // function getAttendeeCallback() {
-  //   return async (chimeAttendeeId, externalUserId) => {
-  //     const attendeeInfo = await getAttendeeFromDB(chimeAttendeeId);
-  //     const attendeeData = attendeeInfo.data.getAttendee;
-  //     return {
-  //       name: attendeeData.name,
-  //     };
-  //   };
-  // }
+  function getAttendeeCallback() {
+    return async (chimeAttendeeId, externalUserId) => {
+      // const attendeeInfo = await getAttendeeFromDB(chimeAttendeeId);
+      // const attendeeData = attendeeInfo.data.getAttendee;
+      return {
+        // name: attendeeData.name,
+        name: userName
+      };
+    };
+  }
 
   const clickedJoinMeeting = async (event) => {
     event.preventDefault();
 
-    // meetingManager.getAttendee = getAttendeeCallback();
-    meetingManager.getAttendee = userName;
+    meetingManager.getAttendee = getAttendeeCallback();
+    // meetingManager.getAttendee = userName;
     const title = meetingTitle.trim().toLocaleLowerCase();
     const name = attendeeName.trim();
 
@@ -69,7 +70,7 @@ const MeetingForm = ({ userName }) => {
   };
 
   return (
-    <form>
+    <>
       <FormField
         field={Input}
         label="Meeting Id"
@@ -81,6 +82,7 @@ const MeetingForm = ({ userName }) => {
         onChange={(e) => {
           setMeetingTitle(e.target.value);
         }}
+        layout="stack"
       />
       <FormField
         field={Input}
@@ -93,6 +95,7 @@ const MeetingForm = ({ userName }) => {
         onChange={(e) => {
           setName(e.target.value);
         }}
+        layout="stack"
       />
       <Flex
         container
@@ -101,7 +104,7 @@ const MeetingForm = ({ userName }) => {
       >
         <PrimaryButton label="Join Meeting" onClick={clickedJoinMeeting} />
       </Flex>
-    </form>
+    </>
   );
 };
 

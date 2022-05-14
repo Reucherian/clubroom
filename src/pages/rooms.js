@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Container, Grid } from '@mui/material';
-import { MeetingProvider } from 'amazon-chime-sdk-component-library-react';
+import { MeetingProvider , lightTheme} from 'amazon-chime-sdk-component-library-react';
 import { Auth } from "aws-amplify";
 import SignOut from '../components/signout';
 import MeetingForm from '../components/meetingForm';
 import Meeting from '../components/meeting';
+import { ThemeProvider } from 'styled-components';
+
+import Amplify from 'aws-amplify';
 
 const Rooms = () =>{
     const [curUserName, setUserName] = useState('');
@@ -34,12 +37,13 @@ const Rooms = () =>{
         <Button variant="contained" color="secondary">join</Button>
         </Grid>
         <Grid item md={4}>
+        <ThemeProvider theme={lightTheme}>
+    <MeetingProvider>
+      <MeetingForm />
+      <Meeting/>
+    </MeetingProvider>
+  </ThemeProvider>
         </Grid>
-        <MeetingProvider>
-            <MeetingForm userName={curUserName}/>
-            <Meeting />
-        </MeetingProvider>
-        <h1>CurUserName: {curUserName}</h1>
     </Grid>
     </Container>
     )
