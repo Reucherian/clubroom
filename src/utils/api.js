@@ -18,6 +18,11 @@ async function createRoom(title,topic,host,region,iconUri){
 
 }
 
+async function listRooms () {
+    const apiData = await API.get('clubroom', '/rooms');
+    return apiData.data;
+}
+
 
 
 // async function joinRoom(topic,host, region){
@@ -37,9 +42,14 @@ async function createRoom(title,topic,host,region,iconUri){
 
 // }
 
-export default {
-    createRoom
+
+
+const toExport = {
+    createRoom,
+    listRooms
 }
+
+export default toExport;
 
 
 
@@ -63,7 +73,6 @@ export default {
 // attendee_name
 
 // TODO:
-//listRooms
 //createRoom
 //deleteRoom
 //joinRoom
