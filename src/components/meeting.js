@@ -12,25 +12,34 @@ import {
     VideoInputControl,
     VideoTileGrid
   } from 'amazon-chime-sdk-component-library-react';
+import { useNavigate } from 'react-router-dom';
 
 
 
-  const Meeting = () => {
+  const Meeting = ({ updateMeetingStatus = (() => {}) }) => {
+    const navigate = useNavigate();
     const meetingManager = useMeetingManager();
     const meetingStatus = useMeetingStatus();
-  
     const clickedEndMeeting = async () => {
       const meetingId = meetingManager.meetingId;
       if (meetingId) {
         // await endMeeting(meetingId);
         await meetingManager.leave();
+        updateMeetingStatus((prev) => false)
+        navigate('/')
       }
     }
+
+    const printToConsole = () => {
+      console.log('HEY HEY HEY HEY meeting started')
+      updateMeetingStatus((prev) => meetingStatus !== MeetingStatus.Succeeded)
+      return true;
+    }
     
-    return (
+    return (<>{meetingStatus === MeetingStatus.Succeeded ? printToConsole() &&
         <div style={{marginTop: '2rem', height: '40rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
           <VideoTileGrid/>
-          {meetingStatus === MeetingStatus.Succeeded ?
+          
             <ControlBar
               layout="undocked-horizontal"
               showLabels
@@ -40,10 +49,9 @@ import {
               <AudioOutputControl />
               <ControlBarButton icon={<Phone />} onClick={clickedEndMeeting} label="End" />
             </ControlBar> 
-            :
-            <div/>
+        </div>:
+            <></>
           }
-        </div>
-    );
+    </>);
   };
 export default Meeting;

@@ -30,7 +30,7 @@ const SignOut = () => {
   }, [])
 
   if(isLoggedIn) return (<>
-    <Button onClick={signOutAmplify}>Sign OUT</Button>
+    <Button color="inherit" variant="outlined" onClick={signOutAmplify}>Sign OUT</Button>
   </>) 
   else {
     return <Navigate to="/signin" />

@@ -4,6 +4,8 @@ import { createTheme } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './components/login';
 import Rooms from './pages/rooms';
+import CreateRoom from './pages/rooms/create';
+import Meeting from './pages/meeting';
 import Amplify from 'aws-amplify';
 import { API } from 'aws-amplify';
 
@@ -47,6 +49,8 @@ function App() {
             <Route path="/signup" element={<Signup />}>
       
           </Route>
+          <Route path='/rooms/create' element={<ProtectedRoute component={<CreateRoom />}/>}></Route>
+          <Route path='/attend/meeting' element={<ProtectedRoute component={<Meeting />}/>}></Route>
           <Route path="/signin" element={<Login />}>
           </Route>
           <Route path="/confirmation" element={<Confirmation />}>
