@@ -1,7 +1,5 @@
-import { getFormControlUnstyledUtilityClasses } from '@mui/base';
 import { API } from 'aws-amplify';
 
-import { createChimeMeeting, getAttendee, endChimeMeeting, getMeeting, joinChimeMeeting } from '../graphql/queries';
 
 async function createRoom(title,topic,host,region,iconUri){
     const data = {
@@ -22,21 +20,25 @@ async function createRoom(title,topic,host,region,iconUri){
 
 
 
-async function joinRoom(topic,host, region){
-    const data = {
-        // roomid is generated
-        body : {
-            title: title,
-            topic: topic,
-            host: host,
-            region: region,
-            iconUri: iconUri
-        }
-    };
-    const apiData =await API.post('clubroom', '/rooms', data);
-    console.log({apiData});
-    alert('Room Created');
+// async function joinRoom(topic,host, region){
+//     const data = {
+//         // roomid is generated
+//         body : {
+//             title: title,
+//             topic: topic,
+//             host: host,
+//             region: region,
+//             iconUri: iconUri
+//         }
+//     };
+//     const apiData =await API.post('clubroom', '/rooms', data);
+//     console.log({apiData});
+//     alert('Room Created');
 
+// }
+
+export default {
+    createRoom
 }
 
 
