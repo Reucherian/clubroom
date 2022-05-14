@@ -75,6 +75,50 @@ app.post('/rooms', function(req, res) {
   })
 });
 
+
+
+const createMeeting = async(context) => {
+
+  const roomId = context.arguments.roomId;
+  const region = context.arguments.region || 'us-east-1';
+  //add iconuri
+
+  if (!roomId) {
+    return response(400, 'application/json', JSON.stringify({
+      error: 'Required properties: meeting roomId'
+    }));
+  }
+
+  const request ={
+    ClientRequestToken: uuid(), //todo: handle unique user id
+    MediaRegion: region,
+    NotificationsConfiguration: {
+      SqsQueueArn: SQS_QUEUE_AR, //add the enviro
+     }, 
+    ExternalMeetingId: roomId
+  };
+
+  console.info('Creating new Room');
+  meetingInfo = await chime.createMeeting(request).promise();
+
+  //new attendee
+  console.info('Adding new attendee');
+
+  const attendeeInfo = (await chime.createAttendee({
+    MeetingId: meetingInfo.Meeting.MeetingId,
+    ExternalUserId: `${uuid().substring(0, 8)}#${roomId}`.substring(0, 64),
+  }).promise());
+
+  return response(200, 'application/json', JSON.stringify(
+    {
+      Meeting: meetingInfo.Meeting,
+      Attendee: attendeeInfo.Attendee,
+    }, null, 2));
+
+}
+
+
+
 app.post('/rooms/*', function(req, res) {
   // Add your code here
   res.json({success: 'post call succeed!', url: req.url, body: req.body})
