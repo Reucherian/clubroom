@@ -6,55 +6,60 @@ import {
   PrimaryButton,
   useMeetingManager,
 } from "amazon-chime-sdk-component-library-react";
+import utils from '../utils/api'
 
-const MeetingForm = () => {
+const { createRoom } = utils;
+
+const MeetingForm = ({ userName }) => {
   const meetingManager = useMeetingManager();
   const [meetingTitle, setMeetingTitle] = useState("");
   const [attendeeName, setName] = useState("");
 
-  function getAttendeeCallback() {
-    return async (chimeAttendeeId, externalUserId) => {
-      const attendeeInfo = await getAttendeeFromDB(chimeAttendeeId);
-      const attendeeData = attendeeInfo.data.getAttendee;
-      return {
-        name: attendeeData.name,
-      };
-    };
-  }
+  // function getAttendeeCallback() {
+  //   return async (chimeAttendeeId, externalUserId) => {
+  //     const attendeeInfo = await getAttendeeFromDB(chimeAttendeeId);
+  //     const attendeeData = attendeeInfo.data.getAttendee;
+  //     return {
+  //       name: attendeeData.name,
+  //     };
+  //   };
+  // }
 
   const clickedJoinMeeting = async (event) => {
     event.preventDefault();
 
-    meetingManager.getAttendee = getAttendeeCallback();
+    // meetingManager.getAttendee = getAttendeeCallback();
+    meetingManager.getAttendee = userName;
     const title = meetingTitle.trim().toLocaleLowerCase();
     const name = attendeeName.trim();
 
-    const meetingResponse = await getMeetingFromDB(title);
-    const meetingJson = meetingResponse.data.getMeeting;
+    // const meetingResponse = await getMeetingFromDB(title);
+    // const meetingJson = meetingResponse.data.getMeeting;
     try {
-      if (meetingJson) {
-        const meetingData = JSON.parse(meetingJson.data);
-        const joinInfo = await joinMeeting(meetingData.MeetingId, name);
-        await addAttendeeToDB(joinInfo.Attendee.AttendeeId, name);
+      // if (meetingJson) {
+      //   const meetingData = JSON.parse(meetingJson.data);
+      //   const joinInfo = await joinMeeting(meetingData.MeetingId, name);
+      //   await addAttendeeToDB(joinInfo.Attendee.AttendeeId, name);
 
-        await meetingManager.join({
-          meetingInfo: meetingData,
-          attendeeInfo: joinInfo.Attendee,
-        });
-      } else {
-        const joinInfo = await createMeeting(title, name, "us-east-1");
-        await addMeetingToDB(
-          title,
-          joinInfo.Meeting.MeetingId,
-          JSON.stringify(joinInfo.Meeting)
-        );
-        await addAttendeeToDB(joinInfo.Attendee.AttendeeId, name);
+      //   await meetingManager.join({
+      //     meetingInfo: meetingData,
+      //     attendeeInfo: joinInfo.Attendee,
+      //   });
+      // } else {
+        const joinInfo = await createRoom('sample title','technology',userName,'us-east-1','sample-uri');
+        // const joinInfo = await createRoom(title, name, "us-east-1");
+        // await addMeetingToDB(
+        //   title,
+        //   joinInfo.Meeting.MeetingId,
+        //   JSON.stringify(joinInfo.Meeting)
+        // );
+        // await addAttendeeToDB(joinInfo.Attendee.AttendeeId, name);
 
         await meetingManager.join({
           meetingInfo: joinInfo.Meeting,
           attendeeInfo: joinInfo.Attendee,
         });
-      }
+      // }
     } catch (error) {
       console.log(error);
     }

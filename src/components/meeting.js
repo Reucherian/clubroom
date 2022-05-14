@@ -22,7 +22,7 @@ import {
     const clickedEndMeeting = async () => {
       const meetingId = meetingManager.meetingId;
       if (meetingId) {
-        await endMeeting(meetingId);
+        // await endMeeting(meetingId);
         await meetingManager.leave();
       }
     }

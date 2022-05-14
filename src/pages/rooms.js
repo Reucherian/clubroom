@@ -3,6 +3,8 @@ import { Button, Container, Grid } from '@mui/material';
 import { MeetingProvider } from 'amazon-chime-sdk-component-library-react';
 import { Auth } from "aws-amplify";
 import SignOut from '../components/signout';
+import MeetingForm from '../components/meetingForm';
+import Meeting from '../components/meeting';
 
 const Rooms = () =>{
     const [curUserName, setUserName] = useState('');
@@ -34,6 +36,8 @@ const Rooms = () =>{
         <Grid item md={4}>
         </Grid>
         <MeetingProvider>
+            <MeetingForm userName={curUserName}/>
+            <Meeting />
         </MeetingProvider>
         <h1>CurUserName: {curUserName}</h1>
     </Grid>
