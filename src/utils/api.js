@@ -1,9 +1,14 @@
 import { API } from 'aws-amplify';
 
 
-async function createRoom(title,topic,host,region,iconUri){
+async function createRoom({
+    title,
+    topic,
+    host,
+    region = 'us-east-1',
+    iconUri
+}) {
     const data = {
-        // roomid is generated
         body : {
             title:title,
             topic:topic,
@@ -13,9 +18,8 @@ async function createRoom(title,topic,host,region,iconUri){
         }
     };
     const apiData =await API.post('clubroom', '/rooms', data);
-    console.log({apiData});
-    alert('Room Created');
-
+    return apiData
+    
 }
 
 async function listRooms () {

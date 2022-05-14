@@ -11,15 +11,18 @@ import Api from '../utils/api';
 const { listRooms } = Api;
 
 const Rooms = () =>{
-    const [curUserName, setUserName] = useState('');
+    const [userName, setUserName] = useState('');
+    const [userId, setUserId] = useState('');
     const [rooms, setRooms] = useState([]);
 
     const getUserName = async () => {
         try {
             const user = await Auth.currentUserInfo()
             console.log(user)
-            const userName = user?.attributes?.name || user?.username || '';
-            setUserName(userName);
+            const curUserName = user?.attributes?.name || user?.username || '';
+            const curUserID = user?.attributes?.userId;
+            setUserName(curUserName);
+            setUserId(curUserID);
             } catch (e) {
             console.log(e)
             }
