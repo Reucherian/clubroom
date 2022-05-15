@@ -22,7 +22,20 @@ async function createRoom({
     
 }
 
-async function listRooms () {
+async function joinRooms ({ meetingId, userId }) {
+    console.log('join room called ')
+    const data = {
+        body: {
+            meetingId, 
+            user: userId
+        }
+    }
+    const apiData = await API.post('clubroom', '/rooms/joinRoom', data);
+    console.log(apiData)
+    return apiData;
+}
+
+async function listRooms () {    
     const apiData = await API.get('clubroom', '/rooms');
     return apiData.data;
 }
@@ -50,7 +63,8 @@ async function listRooms () {
 
 const toExport = {
     createRoom,
-    listRooms
+    listRooms,
+    joinRooms
 }
 
 export default toExport;

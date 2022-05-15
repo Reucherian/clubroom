@@ -1,6 +1,14 @@
 import React from 'react';
 import { Button, Grid, Card, CardContent, Typography, Divider } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 export default function RoomCard({ curRoom }) {
+  const navigate = useNavigate();
+
+  const redirectToJoin = ({ meetingId }) => () => {
+    console.log('navigation ....')
+    navigate(`/rooms/join/${meetingId}`)
+    return true;
+  }
   return (
     <Grid item xs={3}><Card key={curRoom.roomId}>
       <CardContent>
@@ -17,7 +25,7 @@ export default function RoomCard({ curRoom }) {
             <Divider variant='middle' />
           </Grid>
           <Grid my={1} item xs={1}>
-            <Button variant="contained">Join</Button>
+            <Button onClick={redirectToJoin({ meetingId: curRoom?.meeting?.MeetingId })} variant="contained">Join</Button>
           </Grid>
         </Grid>
       </CardContent>

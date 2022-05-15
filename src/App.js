@@ -5,9 +5,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './components/login';
 import Rooms from './pages/rooms';
 import CreateRoom from './pages/rooms/create';
+import JoinRoom from './pages/rooms/join';
 import Meeting from './pages/meeting';
 import Amplify from 'aws-amplify';
-import { API } from 'aws-amplify';
 
 import awsExports from './aws-exports';
 import Signup from './components/signUp';
@@ -59,6 +59,10 @@ function App() {
           </Route>
 
             <Route path='/rooms' element={<ProtectedRoute component={<Rooms/>}/>}>
+            </Route>
+            <Route path='/rooms/join'>
+              <Route path=":meetingId" element={<ProtectedRoute component={<JoinRoom/>}/>}>
+              </Route>
             </Route>
           </Routes>
         </Router>
