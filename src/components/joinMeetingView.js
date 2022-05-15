@@ -16,7 +16,7 @@ const JoinMeetingView = ({ userId, meetingId }) => {
       const clickedJoinMeeting = async () => {
         try {
             const joinInfo = await joinRooms({
-              meetingId,
+              roomId: meetingId,
               userId
             });
           
