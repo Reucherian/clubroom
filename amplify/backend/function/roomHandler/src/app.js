@@ -90,21 +90,14 @@ app.post('/rooms', async function(req, res) {
       attendee: attendeeInfo.Attendee,
     };
     console.log(meeting_info)
-    chime.tran
+    console.log("Starting transcriptions")
     const transcriptEvent = (await chime.startMeetingTranscription({
       MeetingId: meetingInfo.Meeting.MeetingId,
       TranscriptionConfiguration: {EngineTranscribeSettings: { 
-        ContentIdentificationType: "PII",
-        ContentRedactionType: "PII",
-        EnablePartialResultsStabilization: true,
         LanguageCode: "en-US",
-        // LanguageModelName: "string",
-        // PartialResultsStability: "string",
-        // PiiEntityTypes: "string",
         Region: "us-east-1",
      }}
     }).promise());
-
     const params = {
       TableName : process.env.STORAGE_ROOMS_NAME,
       Item:{
@@ -112,7 +105,7 @@ app.post('/rooms', async function(req, res) {
         title: req.body.title,
         topic: req.body.topic,
         iconUri: req.body.iconUri,
-        delete: false,
+        removed: false,
         host: req.body.host,
         createTime: Date.now(),
         ...meeting_info
