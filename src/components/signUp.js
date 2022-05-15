@@ -187,10 +187,10 @@ return (
                                 disabled={loading}
                             >
                                 {loading && <CircularProgress size={20} style={{ marginRight: 20 }} />}
-                                Sign Up
+                                Register
                             </Button>
 
-                          {/* <DLink to="/signin">login page</DLink> */}
+                          {/* <DLink to="/signin">login page</DLink>  */}
 
                   </Grid>
                 </Grid>
