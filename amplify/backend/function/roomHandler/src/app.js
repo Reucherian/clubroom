@@ -90,7 +90,8 @@ app.post('/rooms', async function(req, res) {
       attendee: attendeeInfo.Attendee,
     };
     console.log(meeting_info)
-    const startTranscription = (await chime.startTranscription({
+    chime.tran
+    const transcriptEvent = (await chime.startMeetingTranscription({
       MeetingId: meetingInfo.Meeting.MeetingId,
       TranscriptionConfiguration: {EngineTranscribeSettings: { 
         ContentIdentificationType: "PII",
@@ -103,7 +104,7 @@ app.post('/rooms', async function(req, res) {
         Region: "us-east-1",
      }}
     }).promise());
-    
+
     const params = {
       TableName : process.env.STORAGE_ROOMS_NAME,
       Item:{
