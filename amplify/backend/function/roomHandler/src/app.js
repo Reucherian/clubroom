@@ -16,6 +16,7 @@ See the License for the specific language governing permissions and limitations 
 Amplify Params - DO NOT EDIT */
 
 const express = require('express')
+const cors = require('cors');
 const bodyParser = require('body-parser')
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
 const {uuid} = require('uuidv4');
@@ -31,9 +32,13 @@ app.use(function(req, res, next) {
   next()
 });
 
+app.use(cors())
+
 const AWS = require('aws-sdk');
 const docClient = new AWS.DynamoDB.DocumentClient()
 const chime = new AWS.Chime({ region: 'us-east-1' });
+
+console.log('hrerebnfnfkfn \n\n\n ===== \n\n\n HERE DUDE')
 
 
 app.get('/rooms', function(req, res) {
@@ -105,24 +110,24 @@ app.post('/rooms', async function(req, res) {
   })
 });
 
-app.post('/joinRoom', async function(req, res){
+app.post('/rooms/joinRoom', async function(req, res){
   console.log("Joining Room")
   console.log(req);
-  const {meetingId , name, user} = req.body;
-  if (!meetingId || !name) {
-    return response(400, 'application/json', JSON.stringify({
-      error: 'Required properties: meeting Id, name, user'
-    }));
+  const {meetingId , user} = req.body;
+  if (!meetingId || !user) {
+    return res.json({
+      error: 'Required properties: meeting Id, user'
+    });
   }
   const attendeeInfo = (await chime.createAttendee({
     MeetingId: meetingId,
     ExternalUserId: user,
   }).promise());
 
-  return res.json({attendee: attendeeInfo.Attendee});
+  res.json({attendee: attendeeInfo.Attendee});
 });
 
-app.post('/endRoom',async function(req,res){
+app.post('/rooms/endRoom',async function(req,res){
   console.log("Ending Room")
   console.log(req);
   const {meetingId,roomId} = req.body;

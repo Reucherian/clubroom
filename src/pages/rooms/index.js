@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Container, Grid, Card, CardContent, Typography, Divider } from '@mui/material';
-import { MeetingProvider, lightTheme } from 'amazon-chime-sdk-component-library-react';
+import { Button, Grid } from '@mui/material';
 import { Auth } from "aws-amplify";
 import SignOut from '../../components/signout';
-import MeetingForm from '../../components/meetingForm';
-import Meeting from '../../components/meeting';
-import { ThemeProvider } from 'styled-components';
 import Api from '../../utils/api';
 import TopBar from '../../components/topBar';
 import RoomCard from '../../components/roomCard';
@@ -40,6 +36,7 @@ const Rooms = () => {
 
   const getRoomCards = () => {
     return rooms.map((curRoom) => {
+      console.log(curRoom)
       return <RoomCard curRoom={curRoom} />
     })
   }
@@ -54,22 +51,6 @@ const Rooms = () => {
         </Grid>
         {rooms.length ? <>{getRoomCards()}</> : <div>No Rooms</div>}
       </Grid>
-
-      {/* <Container maxWidth="sm">
-                <Grid>
-                    <Grid md={4}>
-                        {rooms.length ? <>{getRoomCards()}</> : <div>No Rooms</div>}
-                    </Grid>
-                    <Grid md={4}>
-                        <ThemeProvider theme={lightTheme}>
-                            <MeetingProvider>
-                                <MeetingForm />
-                                <Meeting />
-                            </MeetingProvider>
-                        </ThemeProvider>
-                    </Grid>
-                </Grid>
-            </Container> */}
     </>
   )
 }
