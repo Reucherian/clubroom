@@ -69,7 +69,6 @@ app.post('/rooms', async function(req, res) {
   console.log(req);
   const roomId = uuid();
   const region = 'us-east-1';
-  //add iconuri
   const request ={
     ClientRequestToken: req.body.host, //todo: handle unique user id
     MediaRegion: region,
@@ -91,6 +90,20 @@ app.post('/rooms', async function(req, res) {
       attendee: attendeeInfo.Attendee,
     };
     console.log(meeting_info)
+    const startTranscription = (await chime.startTranscription({
+      MeetingId: meetingInfo.Meeting.MeetingId,
+      TranscriptionConfiguration: {EngineTranscribeSettings: { 
+        ContentIdentificationType: "PII",
+        ContentRedactionType: "PII",
+        EnablePartialResultsStabilization: true,
+        LanguageCode: "en-US",
+        // LanguageModelName: "string",
+        // PartialResultsStability: "string",
+        // PiiEntityTypes: "string",
+        Region: "us-east-1",
+     }}
+    }).promise());
+    
     const params = {
       TableName : process.env.STORAGE_ROOMS_NAME,
       Item:{
