@@ -5,9 +5,6 @@ import { Auth } from "aws-amplify";
 import { Link, useNavigate } from "react-router-dom";
 import ClubRoomTitle from "./clubRoomTitle";
 
-
-
-
 const Field = styled(TextField)({
   margin: "10px 0",
 });
@@ -55,40 +52,6 @@ const Signup = () => {
     setLoading(false);
   };
 
-//   return (
-//     <form
-//       style={{
-//         display: "flex",
-//         flexDirection: "column",
-//         justifyContent: "space-between",
-//       }}
-//       onSubmit={handleSignUp}
-//     >
-//       <h1 style={{ fontSize: "22px", fontWeight: 800 }}>
-//         {" "}
-//         New Account Registration
-//       </h1>
-//       <Field label="Name" {...bindName} />
-//       <Field label="Email" {...bindEmail} type="email" />
-//       <Field label="Password" type="password" {...bindPassword} />
-//       <Field
-//         label="Confirm Password"
-//         type="password"
-//         {...bindConfirmPassword}
-//       />
-//       <Button
-//         variant="contained"
-//         color="primary"
-//         size="large"
-//         type="submit"
-//         disabled={loading}
-//       >
-//         {loading && <CircularProgress size={20} style={{ marginRight: 20 }} />}
-//         Sign Up
-//       </Button>
-//       <DLink to="/signin">go to login &rarr;</DLink>
-//     </form>
-//   );
 
 return (   
 <Grid container>
@@ -154,24 +117,11 @@ return (
                     }}
                     sx={{ p: 1 }}
                   >
-                    {/* <Button
-                      variant="contained"
-                      color="secondary"
-                      type="submit"
-                      disabled={loading}
-                    >
-                      {loading && (
-                        <CircularProgress
-                          size={20}
-                          style={{ marginRight: 20 }}
-                        />
-                      )}
-                      Login
-                    </Button> */}
+                
                   </Grid>
                   <Grid
                     item
-                    md={6}
+                    md={12}
                     style={{
                       display: "flex",
                       flexDirection: "column",
@@ -187,10 +137,8 @@ return (
                                 disabled={loading}
                             >
                                 {loading && <CircularProgress size={20} style={{ marginRight: 20 }} />}
-                                Sign Up
+                                Register
                             </Button>
-
-                          {/* <DLink to="/signin">login page</DLink> */}
 
                   </Grid>
                 </Grid>
