@@ -15,11 +15,12 @@ const ClubRoomHeader = (user) => {
                 <ClubroomLogo></ClubroomLogo>
                 </Grid>
                 <Grid item md={8} style={{textAlign: "left"}}>
-                <Box sx={{fontFamily:"Montserrat", fontSize:"3rem"}}>Clubroom</Box>
+                <Box sx={{fontFamily:"Montserrat", fontSize:"2.5rem"}}>Clubroom</Box>
                 </Grid>
             </Grid>
         </Grid>
         <Grid item md={3}>
+            
         </Grid>
     </Grid>
     )

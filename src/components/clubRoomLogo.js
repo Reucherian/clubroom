@@ -10,8 +10,8 @@ const ClubroomLogo = () => {
       strokeMiterlimit="10"
       clipRule="evenodd"
       viewBox="0 0 1000 1000"
-      height="80%"
-      width="80%"
+      height="50%"
+      width="50%"
     >
       <path
         fill="#3fd064"

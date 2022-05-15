@@ -31,7 +31,7 @@ const Rooms = () => {
 
   useEffect(() => {
     getUserName()
-    listRooms().then((data) => setRooms((prev) => data));
+    listRooms().then((data) => data.filter(({ removed }) => !removed)).then((data) => setRooms((prev) => data));
   }, [])
 
   const getRoomCards = () => {
