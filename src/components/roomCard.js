@@ -25,7 +25,7 @@ export default function RoomCard({ curRoom }) {
             <Divider variant='middle' />
           </Grid>
           <Grid my={1} item xs={1}>
-            <Button onClick={redirectToJoin({ meetingId: curRoom?.meeting?.MeetingId })} variant="contained">Join</Button>
+            <Button onClick={redirectToJoin({ meetingId: curRoom?.roomId })} variant="contained">Join</Button>
           </Grid>
         </Grid>
       </CardContent>

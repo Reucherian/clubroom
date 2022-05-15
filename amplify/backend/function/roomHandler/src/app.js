@@ -112,19 +112,30 @@ app.post('/rooms', async function(req, res) {
 
 app.post('/rooms/joinRoom', async function(req, res){
   console.log("Joining Room")
-  console.log(req);
-  const {meetingId , user} = req.body;
-  if (!meetingId || !user) {
-    return res.json({
-      error: 'Required properties: meeting Id, user'
-    });
-  }
-  const attendeeInfo = (await chime.createAttendee({
-    MeetingId: meetingId,
-    ExternalUserId: user,
-  }).promise());
+  try {
+    const {roomId , user} = req.body;
+    if (!roomId || !user) {
+      return res.json({
+        error: 'Required properties: roomId, user'
+      });
+    }
+    const meetingInfo = await docClient.get({
+      TableName : process.env.STORAGE_ROOMS_NAME,
+      Key: {
+        roomId
+      }
+    }).promise();
+    const meetingId = meetingInfo.meeting?.MeetingId;
+    const attendeeInfo = (await chime.createAttendee({
+      MeetingId: meetingId,
+      ExternalUserId: user,
+    }).promise());
 
-  res.json({attendee: attendeeInfo.Attendee});
+    res.json({meeting: meetingInfo, attendee: attendeeInfo.Attendee});
+  } catch (e) {
+    console.log(e);
+    res.status(400).json();
+  }
 });
 
 app.post('/rooms/endRoom',async function(req,res){

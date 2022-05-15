@@ -22,11 +22,11 @@ async function createRoom({
     
 }
 
-async function joinRooms ({ meetingId, userId }) {
+async function joinRooms ({ userId, roomId }) {
     console.log('join room called ')
     const data = {
         body: {
-            meetingId, 
+            roomId, 
             user: userId
         }
     }

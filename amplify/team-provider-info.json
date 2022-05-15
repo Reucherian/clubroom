@@ -15,7 +15,7 @@
       "function": {
         "roomHandler": {
           "deploymentBucketName": "amplify-clubroom-dev-172518-deployment",
-          "s3Key": "amplify-builds/roomHandler-485a7454364d51513936-build.zip"
+          "s3Key": "amplify-builds/roomHandler-466376786f4b62384e36-build.zip"
         }
       }
     }
