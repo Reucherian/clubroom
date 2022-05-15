@@ -119,12 +119,13 @@ app.post('/rooms/joinRoom', async function(req, res){
         error: 'Required properties: roomId, user'
       });
     }
-    const meetingInfo = await docClient.get({
+    const meetingInfo = (await docClient.get({
       TableName : process.env.STORAGE_ROOMS_NAME,
       Key: {
         roomId
       }
-    }).promise();
+    }).promise()).Item;
+    console.log(meetingInfo)
     const meetingId = meetingInfo.meeting?.MeetingId;
     const attendeeInfo = (await chime.createAttendee({
       MeetingId: meetingId,
