@@ -6,7 +6,7 @@ const ClubRoomTitle = (user) => {
     return (
     <Grid container>
             <Grid item md={12} style={{textAlign:"center"}}>
-                <Box sx={{fontFamily:"Montserrat", fontSize:"4vw"}}>Clubroom</Box>
+                <Box sx={{fontFamily:"Montserrat", fontSize:"6rem"}}>Clubroom</Box>
             </Grid>
     </Grid>
     )

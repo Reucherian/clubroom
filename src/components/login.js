@@ -1,6 +1,8 @@
 import React from "react";
 import { useInput } from "./../utils/forms";
 import { Auth } from "aws-amplify";
+import"../assets/style.css"
+
 import {
   Grid,
   Paper,
@@ -13,6 +15,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import ClubRoomTitle from "./clubRoomTitle";
 import ClubroomAltLogo from "./clubRoomAltLogo";
+import { position } from "styled-system";
 
 const Field = styled(TextField)({
   margin: "10px 0",
@@ -41,7 +44,6 @@ const Login = () => {
     setLoading(false);
   };
   return (
-    
     <Grid container>
       <Grid item md={8}>
         <Paper
@@ -53,17 +55,15 @@ const Login = () => {
           }}
           square
         >
-          <Grid container sx={{ paddingTop: 35 }}>
+          <Grid class="parent-container" container sx={{ paddingTop: 35 }}>
 
-            <Grid item md={4}>
-            </Grid>
-            <Grid item md={4}>
+            {/* <Grid item md={4}>
+            </Grid> */}
+            {/* <Grid item md={4}> */}
               <ClubRoomTitle />
-              <form onSubmit={handleSubmit}>
-                <Grid container>
-                  <Grid item md={2}></Grid>
-                  <Grid item md={8}>
-                    <Grid
+              <form class="login-form" onSubmit={handleSubmit}>
+                  {/* <Grid item md={2}></Grid> */}
+                    {/* <Grid
                       container
                       style={{
                         display: "flex",
@@ -71,18 +71,35 @@ const Login = () => {
                         justifyContent: "space-between",
                         paddingTop: 80,
                       }}
-                    >
-                      <Field label={email=== "" ? "email": ""} {...bindEmail} type="text" inputProps={{ style: {background: "white", borderRadius: 8, fontFamily: "Nunito Sans", fontSize: '1rem'} }} InputLabelProps={{shrink: false, style:{fontFamily: "Nunito Sans", fontSize: '1rem'}}}/>
-                      <Field
+                    > */}
+                      {/* <Field label={email=== "" ? "email": ""} {...bindEmail} type="text" inputProps={{ style: {background: "white", borderRadius: 8, fontFamily: "Nunito Sans", fontSize: '1rem'} }} InputLabelProps={{shrink: false, style:{fontFamily: "Nunito Sans", fontSize: '1rem'}}}/> */}
+                      <input {...bindEmail} class="custom-input" style={{
+                        borderRadius: "15px",
+                        background: "white",
+                        padding: "0.8rem 0.5rem",
+                        fontSize: "1.2rem",
+                        border: "none"
+                      }}
+                      placeholder="email"></input>
+                      <input type="password" {...bindPassword} class="custom-input" style={{
+                        margin: "0.8em 0",
+                        borderRadius: "15px",
+                        background: "white",
+                        padding: "0.8rem 0.5rem",
+                        fontSize: "1.2rem",
+                        border: "none"
+                      }}
+                      placeholder="password"></input>
+                      {/* <Field
                         label={password=== "" ? "password": ""}
                         type="password"
                         {...bindPassword}
                         inputProps={{ style: {background: "white", borderRadius: 8, fontFamily: "Nunito Sans", fontSize: '1rem'} }}
                         InputLabelProps={{shrink: false, style:{fontFamily: "Nunito Sans", fontSize: '1rem'}}}
-                      />
+                      /> */}
                       
-                      <Grid container>
-                        <Grid
+                      {/* <Grid container> */}
+                        {/* <Grid
                           item
                           md={6}
                           style={{
@@ -91,8 +108,8 @@ const Login = () => {
                             justifyContent: "space-between",
                           }}
                           sx={{ p: 1 }}
-                        >
-                          <Button
+                        > */}
+                          {/* <Button
                             variant="contained"
                             color="secondary"
                             type="submit"
@@ -105,9 +122,38 @@ const Login = () => {
                               />
                             )}
                             Login
-                          </Button>
-                        </Grid>
-                        <Grid
+                          </Button> */}
+                          <div style={{
+                            display: "flex",
+                            justifyContent: "center"
+                          }}>
+                            <button
+                              style={{
+                              outline: "none",
+                              background: "white",
+                              border: "none",
+                              borderRadius: "10px",
+                              padding: "0.5rem 2rem",
+                              fontSize: "1.2rem",
+                              marginRight: "1rem",
+                              color: "#3FD064",
+                              fontWeight: "bold"
+                            }}>login</button>
+                             <button style={{
+                              outline: "none",
+                              background: "transparent",
+                              alignSelf: "stretch",
+                              border: "none",
+                              borderRadius: "10px",
+                              padding: "0.5rem 2rem",
+                              fontSize: "1.2rem",
+                              backgroundColor: "#3FD064",
+                              color: "white",
+                              fontWeight: "bold"
+                            }}>register</button>
+                          </div>
+                        {/* </Grid> */}
+                        {/* <Grid
                           item
                           md={6}
                           style={{
@@ -116,28 +162,45 @@ const Login = () => {
                             justifyContent: "space-between",
                           }}
                           sx={{ p: 1 }}
-                        >
-                          <Button
+                        > */}
+                          {/* <Button
                             variant="contained"
                             onClick={() => {
                               navigate("/signup");
                             }}
                           >
                             Register
-                          </Button>
-                        </Grid>
-                      </Grid>
-                      <Grid item md={2}></Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
+                          </Button> */}
+                        {/* </Grid> */}
+                      {/* </Grid> */}
               </form>
-            </Grid>
-            <Grid item md={4}></Grid>
+            {/* </Grid> */}
+            {/* <Grid item md={4}></Grid> */}
           </Grid>
         </Paper>
       </Grid>
-      <Grid item md={4}>
+      <Grid style={{
+        position: "relative"
+      }} item md={4}>
+        <img style={{
+          height: "70vh",
+          position: "absolute",
+          top: "50%",
+          left: "-12rem",
+          transform: "translateY(-50%)",
+          zIndex: "1"
+        }} 
+        src="/Clubroom.png"></img>
+        <img style={{
+          scale: "80%",
+          height: "70vh",
+          position: "absolute",
+          bottom: "-30%",
+          left: "60%",
+          transform: "translateX(-50%)",
+          zIndex: "1"
+        }} 
+        src="/Globe.png"></img>
         <Paper
           style={{
             background: "#3FD064",
