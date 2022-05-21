@@ -11,6 +11,7 @@ import {
   Button,
   CircularProgress,
   Container,
+  Hidden,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import ClubRoomTitle from "./clubRoomTitle";
@@ -44,7 +45,7 @@ const Login = () => {
     setLoading(false);
   };
   return (
-    <Grid container>
+    <Grid container style={{overflow: "hidden"}}>
       <Grid item md={8}>
         <Paper
           style={{
@@ -139,7 +140,11 @@ const Login = () => {
                               color: "#3FD064",
                               fontWeight: "bold"
                             }}>login</button>
-                             <button style={{
+                             <button
+                             onClick={() => {
+                              navigate("/signup");
+                            }}
+                             style={{
                               outline: "none",
                               background: "transparent",
                               alignSelf: "stretch",
@@ -180,7 +185,7 @@ const Login = () => {
         </Paper>
       </Grid>
       <Grid style={{
-        position: "relative"
+        position: "relative",
       }} item md={4}>
         <img style={{
           height: "70vh",
