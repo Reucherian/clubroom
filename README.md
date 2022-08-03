@@ -4,7 +4,7 @@ Clubroom is a video and audio based social media application. It allows people e
 
 The application was built to showcase the ability to build several microservices with a focus on serverless architecuture using AWS services like Lambda, SQS, SNS, S3, DynamoDB, CloudFront, CloudFormation and Chime. 
 
-The source to the React.js frontend application can be found in the <a href="src">src</a> folder.
+The source code to the React.js frontend application can be found in the <a href="src">src</a> folder.
 
 To publish the project to your own aws account pre-configure amplify environment variables and run the command
 
