@@ -1,5 +1,6 @@
-# Clubroom
-<img src="src/assets/logo.svg" width="128"/>
+
+#  <img src="src/assets/logo.svg" width="128"/>  Clubroom
+
 
 Clubroom is a video and audio based social media application. It allows people everywhere to talk, tell stories, develop ideas, deepen friendships and meet interesting people around the world. You can jump in and out of different rooms with different subjects like a free flowing podcast. You can simply listen or choose to throw in your thoughts.
 
